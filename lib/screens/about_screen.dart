@@ -7,7 +7,9 @@ class AboutScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('À propos')),
-      body: const Center(child: Text('Application Ma Garderie - Gestion des menus')),
+      body: const Center(
+        child: Text('Application Ma Garderie - Gestion des menus'),
+      ),
     );
   }
 }
