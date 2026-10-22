@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'about_screen.dart'; // On va le créer juste après
+import 'about_screen.dart';
+import '../data/menus_data.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,15 +17,23 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Ma Garderie'),
         backgroundColor: Colors.orange,
         actions: [
-          // Bouton Recherche demandé dans le sujet G2
+          // 1. Clic sur Recherche
           IconButton(
             icon: const Icon(Icons.search),
-            onPressed: () {}, // Sera géré à l'étape 6 (interactions)
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Rechercher un menu')),
+              );
+            },
           ),
-          // Bouton Notifications demandé dans le sujet G2
+          // 2. Clic sur Notifications
           IconButton(
             icon: const Icon(Icons.notifications),
-            onPressed: () {}, // Sera géré à l'étape 6 (interactions)
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Aucune notification')),
+              );
+            },
           ),
         ],
       ),
@@ -44,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('Accueil'),
               onTap: () => Navigator.pop(context),
             ),
-            // Le sujet G2 demande "Menus" et non "Activités"
             ListTile(
               leading: const Icon(Icons.restaurant_menu),
               title: const Text('Menus'),
@@ -64,22 +72,49 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+      // 3. Clic sur le Floating Action Button (+)
       floatingActionButton: FloatingActionButton(
-        onPressed: () {}, // Sera géré à l'étape 6 (interactions)
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Ajouter un menu')),
+          );
+        },
         backgroundColor: Colors.orange,
         child: const Icon(Icons.add),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Titre de section demandé dans le sujet G2
-            Text(
+            const Text(
               'Menus du jour',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            // La liste des menus viendra ici à l'étape 5
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: menus.length,
+                itemBuilder: (context, index) {
+                  final menu = menus[index];
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                    elevation: 2,
+                    child: ListTile(
+                      leading: Text(menu.icone, style: const TextStyle(fontSize: 30)),
+                      title: Text(menu.titre, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Text(menu.description),
+                      // 4. Clic sur un élément de la liste
+                      onTap: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Menu sélectionné : ${menu.titre}')),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
